@@ -32,20 +32,21 @@ REFERENCES owners(id);
 
 -- Joining tables
 CREATE TABLE vets (
-    id serial PRIMARY KEY NOT NULL, 
+    id SERIAL PRIMARY KEY NOT NULL, 
     name varchar(255) NOT NULL, 
     age int, 
     date_of_graduation date
     );
 
 CREATE TABLE specializations (
-    vets_id SERIAL REFERENCES vets(id),
-    species_id int REFERENCES species(id),
-    PRIMARY KEY (species_id, vets_id)
+    id SERIAL PRIMARY KEY NOT NULL, 
+    vets_id int REFERENCES vets(id),
+    species_id int REFERENCES species(id)
 );
 
 CREATE TABLE visits (
-    vets_id SERIAL REFERENCES vets(id),
+    id SERIAL PRIMARY KEY NOT NULL, 
+    vets_id int REFERENCES vets(id),
     animals_id int REFERENCES animals(id),
     PRIMARY KEY (animals_id, vets_id)
 );

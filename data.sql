@@ -56,21 +56,24 @@ SET owner_id = (
 );
 
 -- Many to Many Relationship
-INSERT INTO vets (name, age, date_of_graduation) VALUES
+INSERT INTO vets (name, age, date_of_graduation) 
+VALUES
 ('William Tatcher', 45, '2000-04-23'),
 ('Maisy Smith', 26, '2019-01-17'),
 ('Stephanie Mendez', 64, '1981-05-04'),
 ('Jack Harkness', 38, '2008-06-08');
 
+INSERT INTO specializations (vets_id, species_id) 
+VALUES
+    (1, (SELECT id FROM species WHERE name = 'Pokemon')),
+    (3, (SELECT id FROM species WHERE name = 'Digimon')),
+    (3, (SELECT id FROM species WHERE name = 'Pokemon')),
+    (4, (SELECT id FROM species WHERE name = 'Digimon'));
 
-INSERT INTO specializations (vet_id, species_id) VALUES
-(1, (SELECT id FROM species WHERE name = 'Pokemon')),
-(3, (SELECT id FROM species WHERE name = 'Digimon')),
-(3, (SELECT id FROM species WHERE name = 'Pokemon')),
-(4, (SELECT id FROM species WHERE name = 'Digimon'));
+ALTER TABLE visits ADD COLUMN visiting_date date;
 
-
-INSERT INTO visits (vet_id, animal_id, visit_date) VALUES
+INSERT INTO visits (vets_id, animals_id, visiting_date) 
+VALUES
 (1, 1, '2020-05-24'),
 (3, 1, '2020-07-22'),
 (4, 2, '2021-02-02'),
