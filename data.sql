@@ -94,3 +94,15 @@ VALUES
 (2, 9, '2020-08-03'),
 (3, 10, '2020-05-24'),
 (1, 10, '2021-01-11');
+
+
+-- Performance Audit
+
+-- This will add 2.500.000 owners with full_name = 'Owner <X>' and email = 'owner_<X>@email.com' (~2min approx.)
+insert into owners (full_name, email) 
+select 'Owner ' || generate_series(1,2500000), 'owner_' || generate_series(1,2500000) || '@mail.com';
+
+-- Update total number of visits animal with id of 4 has made to vets
+UPDATE animals
+SET total_vet_visits = (SELECT COUNT(*) FROM visits where animal_id = 4)
+WHERE id = 4;

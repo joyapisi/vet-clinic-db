@@ -48,7 +48,7 @@ CREATE TABLE visits (
     id SERIAL PRIMARY KEY NOT NULL, 
     vets_id int REFERENCES vets(id),
     animals_id int REFERENCES animals(id),
-    PRIMARY KEY (animals_id, vets_id)
+    FOREIGN KEY (animals_id, vets_id)
 );
 
 -- Performance Audit
@@ -64,10 +64,12 @@ SELECT * FROM
 (SELECT id FROM vets) vets_ids, 
 generate_series('1980-01-01'::timestamp, '2021-01-01', '4 hours') visit_timestamp;
 
--- This will add 2.500.000 owners with full_name = 'Owner <X>' and email = 'owner_<X>@email.com' (~2min approx.)
-insert into owners (full_name, email) 
-select 'Owner ' || generate_series(1,2500000), 'owner_' || generate_series(1,2500000) || '@mail.com';
+ALTER TABLE animals ADD total_vet_visits INT;
 
-SELECT COUNT(*) FROM visits where animal_id = 4;
-SELECT * FROM visits where vet_id = 2;
-SELECT * FROM owners where email = 'owner_18327@mail.com';
+-- Copy visit records of vet with id of 2 into new table called vets_id2_visit_records
+SELECT * INTO vet_id2_visit_records
+FROM visits
+WHERE vet_id = 2;
+
+-- create an index to sort owners’ email alphabetically
+CREATE INDEX owners_email_asc ON owners(email ASC);

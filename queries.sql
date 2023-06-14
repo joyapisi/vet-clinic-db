@@ -183,3 +183,20 @@ FROM (
 JOIN species s ON visit_counts.species_id = s.id
 ORDER BY visit_counts.num_visits DESC
 LIMIT 1;
+
+-- Performance Audit
+SELECT COUNT(*) FROM visits where animal_id = 4;
+SELECT * FROM visits where vet_id = 2;
+SELECT * FROM owners where email = 'owner_18327@mail.com';
+
+-- Modify "SELECT COUNT(*) FROM visits where animal_id = 4;" query to below
+-- Get the number of visits by animal_id = 4 from new column on animals table
+explain analyze SELECT total_vet_visits FROM animals
+WHERE id = 4;
+
+-- Modify "SELECT * FROM visits where vet_id = 2;" query to below
+-- Do query on newly created table
+explain analyze SELECT * FROM vet_id2_visit_records;
+
+-- Analyze after indexing email column on owners table
+explain analyze SELECT * FROM owners where email = 'owner_18327@mail.com';
